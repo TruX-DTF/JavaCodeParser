@@ -607,8 +607,8 @@ public class ExpJdtVisitor extends JdtVisitor {
 		SimpleName methodName = node.getName();
 		List<?> arguments = node.arguments();
 		pushNode(methodName, "MethodName:" + methodName.getFullyQualifiedName() + ":" + arguments.toString());
-		popNode();
 		visitList(arguments);
+		popNode();
 		return false;
 	}
 
