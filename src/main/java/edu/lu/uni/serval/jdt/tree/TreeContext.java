@@ -214,6 +214,12 @@ public class TreeContext {
                 }
                 return n;
             }
+
+			@Override
+			public void remove() {
+				// TODO Auto-generated method stub
+				
+			}
         };
     }
 

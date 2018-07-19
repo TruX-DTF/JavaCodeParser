@@ -143,10 +143,7 @@ public interface ITree {
     /**
      * @return the absolute character index where the tree ends
      */
-    default int getEndPos()  {
-        return getPos() + getLength();
-    }
-//    int getEndPos();// JDK 1.7
+    int getEndPos();// JDK 1.7
 
     /**
      * @see TreeUtils#computeSize(ITree)

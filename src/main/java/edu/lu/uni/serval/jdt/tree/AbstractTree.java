@@ -3,6 +3,7 @@ package edu.lu.uni.serval.jdt.tree;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -303,26 +304,24 @@ public abstract class AbstractTree implements ITree {
         @Override
         public int getPos() {
             return Collections.min(children, 
-            		(t1, t2) -> t2.getPos() - t1.getPos()).getPos();
-//            		new Comparator<ITree>(){ // JDK 1.7
-//						@Override
-//						public int compare(ITree t1, ITree t2) {
-//							return t2.getPos() - t1.getPos();
-//						}
-//		            }).getPos();
+            		new Comparator<ITree>(){ // JDK 1.7
+						@Override
+						public int compare(ITree t1, ITree t2) {
+							return t2.getPos() - t1.getPos();
+						}
+		            }).getPos();
         }
 
         @Override
         public int getEndPos() {
-        	return Collections.max(children, (t1, t2) -> t2.getPos() - t1.getPos()).getEndPos();
-//        	ITree t = Collections.max(children, new Comparator<ITree>(){  // JDK 1.7
-//						@Override
-//						public int compare(ITree t1, ITree t2) {
-//							return t2.getPos() - t1.getPos();
-//						}
-//		            	
-//		            });
-//            return t.getPos() + t.getLength();
+        	ITree t = Collections.max(children, new Comparator<ITree>(){  // JDK 1.7
+						@Override
+						public int compare(ITree t1, ITree t2) {
+							return t2.getPos() - t1.getPos();
+						}
+		            	
+		            });
+            return t.getPos() + t.getLength();
         }
 
         @Override
@@ -401,5 +400,11 @@ public abstract class AbstractTree implements ITree {
         public Map.Entry<String, Object> next() {
             throw new NoSuchElementException();
         }
+
+		@Override
+		public void remove() {
+			// TODO Auto-generated method stub
+			
+		}
     }
 }

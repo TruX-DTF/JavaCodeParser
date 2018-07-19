@@ -5,27 +5,22 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Set;
 import java.util.TreeSet;
 
 public abstract class Registry<K, C, A> {
 
     Set<Entry> entries = new TreeSet<>(
-			(o1, o2) -> {
-				int cmp = o1.priority - o2.priority;
-				if (cmp == 0)
-					cmp = o1.id.compareToIgnoreCase(o2.id); // FIXME or not ... is id a good unique stuff
-				return cmp;
+    		new Comparator<Registry<K, C, A>.Entry>() {// JDK version lower than 1.8
+				@Override
+				public int compare(Registry<K, C, A>.Entry o1, Registry<K, C, A>.Entry o2) {
+					int cmp = o1.priority - o2.priority;
+					if (cmp == 0)
+			            cmp = o1.id.compareToIgnoreCase(o2.id); // FIXME or not ... is id a good unique stuff
+			        return cmp;
+				}
 			}
-//    		new Comparator<Registry<K, C, A>.Entry>() {// JDK version lower than 1.8
-//				@Override
-//				public int compare(Registry<K, C, A>.Entry o1, Registry<K, C, A>.Entry o2) {
-//					int cmp = o1.priority - o2.priority;
-//					if (cmp == 0)
-//			            cmp = o1.id.compareToIgnoreCase(o2.id); // FIXME or not ... is id a good unique stuff
-//			        return cmp;
-//				}
-//			}
     );
 
     public class Priority {
@@ -128,16 +123,22 @@ public abstract class Registry<K, C, A> {
     @SuppressWarnings("rawtypes")
 	protected Factory<? extends C> defaultFactory(Class<? extends C> clazz, Class... signature) {
         try {
-			Constructor<? extends C> ctor = clazz.getConstructor(signature);
-			return (args) -> ctor.newInstance(args);
-//            final Constructor<? extends C> ctor = clazz.getConstructor(signature);
-//            return new Factory<C>() {
-//				@Override
-//				public C newInstance(Object[] args)
-//						throws IllegalAccessException, InvocationTargetException, InstantiationException {
-//					return ctor.newInstance(args);
-//				}
-//			};
+			final Constructor<? extends C> ctor = clazz.getConstructor(signature);
+			return new Factory<C>() {
+				@Override
+				public C newInstance(Object[] args) {
+					try {
+						return ctor.newInstance(args);
+					} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+						return null;
+					}
+				}
+
+				@Override
+				public C instantiate(Object[] args) {
+					return newInstance(args);
+				}
+			};
         } catch (NoSuchMethodException e) {
             System.out.println(Arrays.toString(clazz.getConstructors()));
             throw new RuntimeException(String.format("This is a static bug. Constructor %s(%s) not found",
@@ -147,13 +148,6 @@ public abstract class Registry<K, C, A> {
 
     public interface Factory<C> {
         C newInstance(Object[] args) throws IllegalAccessException, InvocationTargetException, InstantiationException;
-        
-        default C instantiate(Object[] args) {
-            try {
-                return newInstance(args);
-            } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
-                return null;
-            }
-        }
+		C instantiate(Object[] args);
     }
 }
