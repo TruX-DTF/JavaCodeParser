@@ -257,7 +257,7 @@ public class Checker {
 		return type == 33;
 	}
 	
-	public static boolean isNumberliteral(int type) {
+	public static boolean isNumberLiteral(int type) {
 		return type == 34;
 	}
 	
