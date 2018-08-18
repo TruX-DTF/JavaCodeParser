@@ -57,13 +57,14 @@ public class JavaFileParser {
 		try {
 			packageName = unit.getPackage().getName().toString();
 		} catch (Exception e) {
-			packageName = file.getPath();
-			System.err.println("Failed to get package name: " + packageName);
-			int fromIndex = packageName.indexOf(projectName);
-			if (fromIndex < 0) {
-				fromIndex = packageName.indexOf("dataset") + 8;
-			}
-			packageName = packageName.substring(fromIndex, packageName.lastIndexOf("/")).replaceAll("/", ".");
+//			packageName = file.getPath();
+//			System.err.println("Failed to get package name: " + packageName);
+//			int fromIndex = packageName.indexOf(projectName);
+//			if (fromIndex < 0) {
+//				fromIndex = packageName.indexOf("dataset") + 8;
+//			}
+//			packageName = packageName.substring(fromIndex, packageName.lastIndexOf("/")).replaceAll("/", ".");
+			return;
 		}
 		
 		ITree rootTree = new ASTGenerator().generateTreeForJavaFile(file, TokenType.EXP_JDT);
@@ -97,7 +98,7 @@ public class JavaFileParser {
 			int astNodeType = child.getType();
 			
 			if (Checker.isMethodDeclaration(astNodeType)) { // MethodDeclaration.
-				identifyMethod(child, className);
+//				identifyMethod(child, className);
 				readMethodInfo(child, className);
 			} else {
 				String currentClassName = "";
