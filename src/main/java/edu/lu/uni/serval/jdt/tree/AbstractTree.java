@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.stream.Stream;
 
 import edu.lu.uni.serval.jdt.tree.hash.HashUtils;
 
@@ -257,6 +258,12 @@ public abstract class AbstractTree implements ITree {
        			b.append(child.getLabel() + " ");
        	return b.toString().trim();
    	}
+
+    public Stream<ITree> flattened() {
+        return Stream.concat(
+                Stream.of(this),
+                children.stream().flatMap(ITree::flattened));
+    }
        
        
 

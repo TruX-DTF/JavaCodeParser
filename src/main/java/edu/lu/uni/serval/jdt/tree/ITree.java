@@ -3,6 +3,7 @@ package edu.lu.uni.serval.jdt.tree;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.stream.Stream;
 
 /**
  * Interface to represent abstract syntax trees.
@@ -209,5 +210,8 @@ public interface ITree {
     Iterator<Entry<String, Object>> getMetadata();
     
     public abstract String getChildrenLabels();
+
+    public Stream<ITree> flattened();
+
 
 }

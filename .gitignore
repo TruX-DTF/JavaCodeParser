@@ -4,3 +4,5 @@
 Test.java
 .settings/
 target
+.idea/
+JavaCodeParser.iml
