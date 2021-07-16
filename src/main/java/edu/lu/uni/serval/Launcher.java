@@ -30,10 +30,10 @@ public class Launcher {
     public static void main(String[] args) throws IOException {
 
 
-//        String filename = args[0];
+        String filename = args[0];
 
 //        String filename = "/Users/anil.koyuncu/KUI/Defects4JData/Math_106/src/java/org/apache/commons/math/fraction/ProperFractionFormat.java";
-        String filename = "/Users/anil.koyuncu/KUI/Defects4JData/Math_12/src/main/java/org/apache/commons/math3/random/BitsStreamGenerator.java";
+//        String filename = "/Users/anil.koyuncu/KUI/Defects4JData/Math_12/src/main/java/org/apache/commons/math3/random/BitsStreamGenerator.java";
 //        String filename = "/Users/anilkoyuncu/projects/bugLocalization/gitrepo/fuse/fabric/fabric-itests/basic/src/test/java/io/fabric8/itests/basic/mq/MQProfileTest.java";
         try {
 
